@@ -10,9 +10,7 @@ import (
 	"os"
 )
 
-// Перенаправляем запросы куда надо
 func reversProxy(w http.ResponseWriter, r *http.Request) {
-
 	host := r.Host
 	knowThisServer := os.Getenv(host)
 
@@ -20,7 +18,6 @@ func reversProxy(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprintf(w, "404")
 	} else {
-
 		url, err := url.Parse(knowThisServer)
 		if err != nil {
 			log.Println(err)
@@ -30,7 +27,6 @@ func reversProxy(w http.ResponseWriter, r *http.Request) {
 		proxy := httputil.NewSingleHostReverseProxy(url)
 		proxy.ServeHTTP(w, r)
 	}
-
 }
 
 func main() {
